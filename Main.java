@@ -34,7 +34,7 @@ class Person extends Thread{
     Object cargo = null;
     public void run(){
         while(true){
-            this.cargo = lastPerson.pushCargo();
+            getCargo(lastPerson.pushCargo());
             System.out.println(super.getName()+"get cargo");
             
         }
@@ -49,11 +49,9 @@ class Person extends Thread{
     }
     public Object pushCargo(){
         while(this.cargo == null){
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
                 
-                }
+                    Thread.yield();
+                
             }
         synchronized(this.cargo){
             try {
@@ -63,7 +61,7 @@ class Person extends Thread{
             }
             System.out.println(super.getName() + "push cargo");
             Object o = this.cargo;
-            cargo = null;
+            this.cargo = null;
             return o;
 
         }
